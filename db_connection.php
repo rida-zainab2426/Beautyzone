@@ -1,25 +1,23 @@
 <?php
-// db_connection.php
-
-$host = 'localhost'; // Or your database host
-$db = 'beautyzone_db'; // The name of your database
-$user = 'root'; // Your database username (e.g., 'root' for XAMPP/WAMP)
-$pass = ''; // Your database password (e.g., '' for XAMPP/WAMP default root)
-$charset = 'utf8mb4';
-
-$dsn = "mysql:host=$host;dbname=$db;charset=$charset";
-$options = [
-    PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
-    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-    PDO::ATTR_EMULATE_PREPARES   => false,
-];
+// Database credentials
+$host = 'localhost'; // Usually 'localhost' if your database is on the same server
+$db_name = 'beautyzone_db'; // The name of the database you created
+$username = 'root'; // Your MySQL username (e.g., 'root' for XAMPP/WAMP default)
+$password = ''; // Your MySQL password (e.g., empty for XAMPP/WAMP default, but set one in production!)
 
 try {
-    $pdo = new PDO($dsn, $user, $pass, $options);
-} catch (\PDOException $e) {
-    // Log the error for debugging purposes (check your web server's error logs)
-    error_log("Database connection failed: " . $e->getMessage());
-    // For a live site, you might show a generic error message to the user
-    die("Connection to database failed. Please try again later.");
+    // Create a new PDO instance
+    $pdo = new PDO("mysql:host=$host;dbname=$db_name;charset=utf8mb4", $username, $password);
+
+    // Set the PDO error mode to exception
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC); // Fetch rows as associative arrays by default
+
+    // Optional: Echo a success message if you want to test the connection directly
+    // echo "Connected to the database successfully!";
+
+} catch (PDOException $e) {
+    // If connection fails, output the error and stop script execution
+    die("Connection failed: " . $e->getMessage());
 }
 ?>
